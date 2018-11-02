@@ -2,16 +2,16 @@
 This is a tool to publish a form to all clients based on web sockets and allows you to export all the data in a csv.
 
 # Run
-You nedd NodeJS and MongoDB installed on your PC to run this application.
-If you don't have MongoDB installed, feel free to check www.mlab.com
-Go to the directory after clone or downlaod
-Run " npm install " to install all dependencies
-Next, run the server with " node server.js "
+You nedd NodeJS and MongoDB installed on your PC to run this application.\n
+If you don't have MongoDB installed, feel free to check www.mlab.com .\n
+Go to the directory after clone or download \n
+Run " npm install " to install all dependencies\n
+Next, run the server with " node server.js "\n
 
 # Technologies used
-Template : HTML, CSS, Bootstrap 4, DataTable.js, Notify.js
-Server : NodeJS
-DB : MongoDG
+Template : HTML, CSS, Bootstrap 4, DataTable.js, Notify.js\n
+Server : NodeJS\n
+DB : MongoDG\n
 
 # To send a new Form
 Go to localhost:3100/addprofile to get the form page.
