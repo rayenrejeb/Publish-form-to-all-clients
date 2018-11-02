@@ -18,3 +18,4 @@ Go to localhost:3100/addprofile to get the form page.
 
 # To check all the submitted Forms
 Go to localhost:3100 to get a table with all the submits.
+You can click on a row to mark it as seen.
