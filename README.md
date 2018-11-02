@@ -2,7 +2,8 @@
 This is a tool to publish a form to all clients based on web sockets
 
 # Run
-You nedd NodeJS and MongoDB installed on your PC to run this application
+You nedd NodeJS and MongoDB installed on your PC to run this application.
+If you don't have MongoDB installed, feel free to check www.mlab.com
 Go to the directory after clone or downlaod
 Run " npm install " to install all dependencies
 Next, run the server with " node server.js "
