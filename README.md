@@ -13,8 +13,8 @@ Template : HTML, CSS, Bootstrap 4, DataTable.js, Notify.js
 Server : NodeJS
 DB : MongoDG
 
-# To send form
+# To send a new Form
 Go to localhost:3100/addprofile to get the form page.
 
-# To check all forms submitted
-Go to localhost:3100 to get table with all submits.
+# To check all the submitted Forms
+Go to localhost:3100 to get a table with all the submits.
