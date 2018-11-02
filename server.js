@@ -48,7 +48,14 @@ app.get('/addprofile', function(req,res){
 
 // Export all profiles
 app.get('/export', function(req,res){
-    Profile.find().lean().exec({}, function(err, products) {
+    Profile.find()
+    .select('-_id')
+    .select('firstName')
+    .select('lastName')
+    .select('ecole')
+    .select('email')
+    .select('phone')
+    .lean().exec({}, function(err, products) {
         var filename   = "products.csv";
         if (err) res.send(err);
         res.statusCode = 200;
