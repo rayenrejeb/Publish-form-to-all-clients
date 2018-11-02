@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JPO</title>
+    <style>
+        *{
+            border: none !important;
+            transition: all 0.3s linear;
+        }
+        body{
+            background-color: #FFCD72 !important;
+        }
+        .btn{
+            background-color: #D36582;
+        }
+        .container{
+            background-color: transparent;
+            margin-top: 10vh
+        }
+        .checked{
+            background-color: #FFF !important;
+        }
+        form{
+            margin-top: 20vh
+        }
+        th{
+            background-color: #FFF;
+        }
+        tr{
+            background-color: #E88873 !important;
+        }
+    </style>
+</head>
+<body onload="getAllProfiles()">
+
+    <div class="container">
+        <table id="allprofiles">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Ecole</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                </tr>
+            </thead>
+            <tbody id="all">
+
+            </tbody>
+        </table>
+    </div>
+
+    <!--Bootstrap 4-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    
+    <!--Datatable-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+    <!--Notify.js link for notifications-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+
+    <!--Socket.io Library-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"></script>
+    <script>
+        // Select The DataTable
+        const table = $('#allprofiles').DataTable();
+
+        // Make the Socket connection with the Server
+        var socket = io.connect('http://localhost:3100');
+
+        // Query the DOM and get where to push new profiles
+        var all =  document.getElementById('all');
+
+        // Handle Successful insertion
+        socket.on('addprofile',function(profile){
+
+            // Add the profile as a row in the Table
+            table.row.add([
+                profile.lastName,
+                profile.firstName,
+                profile.ecole,
+                profile.email,
+                profile.phone
+            ]).draw( false );
+
+            //Notify user when a new profile is inserted
+            $.notify(profile.lastName + " " + profile.firstName + " a été ajouté", "success");
+
+        });
+
+        // Emit request to get all profiles
+        function getAllProfiles(){
+            socket.emit("getAllProfiles",{ });
+        }
+        
+        // Change background color of rows selected
+        $("#all").on("click","tr", function(e){
+            $(this).addClass('checked')
+        });
+  
+    </script>
+</body>
+</html>
