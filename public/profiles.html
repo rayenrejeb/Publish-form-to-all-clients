@@ -16,6 +16,9 @@
         .btn{
             background-color: #D36582;
         }
+        .btn-success{
+            float: right;
+        }
         .container{
             background-color: transparent;
             margin-top: 10vh
@@ -37,6 +40,11 @@
 <body onload="getAllProfiles()">
 
     <div class="container">
+        <!--Export Button-->
+        <a href="http://localhost:3100/export">
+            <button class="btn btn-success" target="_blank">Export</button>
+        </a>
+        <br><br>
         <table id="allprofiles">
             <thead>
                 <tr>

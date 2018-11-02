@@ -10,6 +10,7 @@ var express = require('express'); // Framework to initiate App
 var socket = require('socket.io'); // The Web Socket
 var mongoose = require('mongoose'); // Package to manage MongoDB
 var path = require('path'); // Package to manage paths
+var csv = require('csv-express');
 
 var app = express();
 
@@ -43,6 +44,18 @@ app.get('/', function(req,res){
 
 app.get('/addprofile', function(req,res){
     res.sendFile(path.join(__dirname + '/public/index.html'));
+})
+
+// Export all profiles
+app.get('/export', function(req,res){
+    Profile.find().lean().exec({}, function(err, products) {
+        var filename   = "products.csv";
+        if (err) res.send(err);
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader("Content-Disposition", 'attachment; filename='+filename);
+        res.csv(products, true);
+    });
 })
 
 // Setup our Socket and our events
