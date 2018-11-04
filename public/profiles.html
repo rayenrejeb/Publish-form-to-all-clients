@@ -53,6 +53,7 @@
                     <th>Ecole</th>
                     <th>Email</th>
                     <th>Téléphone</th>
+                    <th>Cv</th>
                 </tr>
             </thead>
             <tbody id="all">
@@ -61,12 +62,34 @@
         </table>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">CV</h5>
+            <hr>
+            <span class="oi oi-arrow-circle-right" onclick="rotateRight()" id="right"></span>
+            <span class="oi oi-arrow-circle-left" onclick="rotateLeft()" id="left"></span>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+            ...
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+        </div>
+    </div>
+
     <!--Bootstrap 4-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css" /> 
     <!--Datatable-->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
@@ -81,7 +104,7 @@
         const table = $('#allprofiles').DataTable();
 
         // Make the Socket connection with the Server
-        var socket = io.connect('http://localhost:3100');
+        var socket = io.connect('192.168.1.3:3100');
 
         // Query the DOM and get where to push new profiles
         var all =  document.getElementById('all');
@@ -95,13 +118,19 @@
                 profile.firstName,
                 profile.ecole,
                 profile.email,
-                profile.phone
+                profile.phone,
+                '<button type="button" id="showCv" phone="' + profile.phone + '" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Consulter</button>'
             ]).draw( false );
 
             //Notify user when a new profile is inserted
             $.notify(profile.lastName + " " + profile.firstName + " a été ajouté", "success");
 
         });
+
+        $("#all").on("click", "#showCv", function(){
+            let phonee = $(this).attr("phone");
+            document.getElementById("modalBody").innerHTML = '<br><br><img src="'+ phonee +'.jpg" class="img-fluid" id="imgCv">';
+        })
 
         // Emit request to get all profiles
         function getAllProfiles(){
@@ -112,6 +141,14 @@
         $("#all").on("click","tr", function(e){
             $(this).addClass('checked')
         });
+
+        // Rotate Cv
+        function rotateRight(){
+            $("#imgCv").css({'transform': 'rotate(90deg)'});
+        }
+        function rotateLeft(){
+            $("#imgCv").css({'transform': 'rotate(-90deg)'});
+        }
   
     </script>
 </body>

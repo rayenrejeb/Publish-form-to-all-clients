@@ -11,6 +11,7 @@ var socket = require('socket.io'); // The Web Socket
 var mongoose = require('mongoose'); // Package to manage MongoDB
 var path = require('path'); // Package to manage paths
 var csv = require('csv-express');
+var fs = require('fs');
 
 var app = express();
 
@@ -37,6 +38,7 @@ var server = app.listen(3100,function(){
     });
 
 // Our template files will be in the Public directory
+app.use(express.static(path.join(__dirname + '/cv')))
 
 app.get('/', function(req,res){
     res.sendFile(path.join(__dirname + '/public/profiles.html'));
@@ -56,7 +58,7 @@ app.get('/export', function(req,res){
     .select('email')
     .select('phone')
     .lean().exec({}, function(err, products) {
-        var filename   = "products.csv";
+        var filename   = "profiles.csv";
         if (err) res.send(err);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'text/csv');
@@ -80,6 +82,7 @@ io.on('connection',function(socket){
             email: data.email,
             phone: data.phone
         });
+
         newProfile.save(function(error){
             
             // Tell the client that the profile was added successfully
@@ -89,6 +92,15 @@ io.on('connection',function(socket){
 
                 // Emit insertion to the Add Form
                 io.sockets.emit('success', newProfile);
+
+                // Save image
+                fs.writeFile('./cv/'+ data.phone + '.jpg', data.image, 'binary', function(err) {
+                    if(err) {
+                        return console.log(err);
+                    }
+                
+                    console.log("The file was saved!");
+                }); 
             }
 
             // Handle Error
