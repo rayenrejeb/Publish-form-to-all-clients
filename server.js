@@ -58,7 +58,9 @@ app.get('/export', function(req,res){
     .select('email')
     .select('phone')
     .lean().exec({}, function(err, products) {
+
         var filename   = "profiles.csv";
+
         if (err) res.send(err);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'text/csv');
