@@ -106,10 +106,13 @@
 
         // Make the Socket connection with the Server
         var socket = io.connect('localhost:3100');
+<<<<<<< HEAD
         socket.on('connect', function(){
             // Emit request to get all profiles
             socket.emit("getAllProfiles",{ id: socket.io.engine.id });
         })
+=======
+>>>>>>> 12c24ef8004b54fe8d06160a0871da140e356150
 
         // Query the DOM and get where to push new profiles
         var all =  document.getElementById('all');

@@ -57,13 +57,14 @@ app.get('/export', function(req,res){
     .select('ecole')
     .select('email')
     .select('phone')
-    .lean().exec({}, function(err, products) {
+    .lean().exec({}, function(err, profiles) {
+
         var filename   = "profiles.csv";
         if (err) res.send(err);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'text/csv');
         res.setHeader("Content-Disposition", 'attachment; filename='+filename);
-        res.csv(products, true);
+        res.csv(profiles, true);
     });
 })
 
