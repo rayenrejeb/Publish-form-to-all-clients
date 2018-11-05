@@ -37,7 +37,7 @@
         }
     </style>
 </head>
-<body onload="getAllProfiles()">
+<body>
 
     <div class="container">
         <!--Export Button-->
@@ -101,10 +101,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"></script>
     <script>
         // Select The DataTable
+        var sockid;
         const table = $('#allprofiles').DataTable();
 
         // Make the Socket connection with the Server
-        var socket = io.connect('192.168.1.3:3100');
+        var socket = io.connect('localhost:3100');
+        socket.on('connect', function(){
+            // Emit request to get all profiles
+            socket.emit("getAllProfiles",{ id: socket.io.engine.id });
+        })
 
         // Query the DOM and get where to push new profiles
         var all =  document.getElementById('all');
@@ -131,11 +136,6 @@
             let phonee = $(this).attr("phone");
             document.getElementById("modalBody").innerHTML = '<br><br><img src="'+ phonee +'.jpg" class="img-fluid" id="imgCv">';
         })
-
-        // Emit request to get all profiles
-        function getAllProfiles(){
-            socket.emit("getAllProfiles",{ });
-        }
         
         // Change background color of rows selected
         $("#all").on("click","tr", function(e){

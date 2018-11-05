@@ -58,9 +58,7 @@ app.get('/export', function(req,res){
     .select('email')
     .select('phone')
     .lean().exec({}, function(err, products) {
-
         var filename   = "profiles.csv";
-
         if (err) res.send(err);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'text/csv');
@@ -100,23 +98,20 @@ io.on('connection',function(socket){
                     if(err) {
                         return console.log(err);
                     }
-                
                     console.log("The file was saved!");
                 }); 
             }
-
             // Handle Error
             if(error)
                 io.sockets.emit('fail', error);
-
         });
     });
 
     // Return all Profiles
-    socket.on('getAllProfiles', function(data){
+    socket.on('getAllProfiles', function(client){
         Profile.find({}, function(err,profiles){
             profiles.forEach(function(profile) {
-                io.sockets.emit('addprofile', profile);
+                io.to(client.id).emit('addprofile', profile);
             });
         });
     });
